@@ -1,0 +1,29 @@
+# Example terraform.tfvars file
+# Copy this to terraform.tfvars and update with your values
+
+# Project Configuration
+project_name = "secure-webapp"
+environment  = "dev"
+
+# AWS Configuration
+aws_region = "us-east-1"
+
+# Network Configuration
+vpc_cidr           = "10.0.0.0/16"
+public_subnet_cidr = "10.0.1.0/24"
+
+# SSH Configuration
+# Replace with your IP address for security!
+# Find your IP: curl ifconfig.me
+ssh_cidr_blocks = ["0.0.0.0/0"] # CHANGE THIS!
+
+# EC2 Configuration
+instance_type = "t2.micro" # Free tier eligible
+
+# SSH Public Key
+# Generate with: ssh-keygen -t rsa -b 4096 -f ~/.ssh/secure-webapp-key
+# Then paste the content of ~/.ssh/secure-webapp-key.pub below
+ssh_public_key = "ssh-rsa AAAAB3... your-public-key-here"
+
+# Application Configuration
+app_version = "1.0.0"
