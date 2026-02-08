@@ -125,7 +125,6 @@ def update_task(task_id):
 @app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
     """Delete a task"""
-    global tasks
     task = next((t for t in tasks if t['id'] == task_id), None)
     
     if not task:
