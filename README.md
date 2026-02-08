@@ -6,40 +6,43 @@ A production-ready DevSecOps project demonstrating automated deployment of a con
 ![Python](https://img.shields.io/badge/python-3.11-blue.svg)
 ![Terraform](https://img.shields.io/badge/terraform-1.6+-purple.svg)
 ![Docker](https://img.shields.io/badge/docker-latest-blue.svg)
+![HTTPS](https://img.shields.io/badge/HTTPS-Cloudflare-orange.svg)
 ![Build Status](https://github.com/jiaquantan/secure-webapp-pipeline/actions/workflows/deploy.yml/badge.svg?branch=main)
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Quick Start](#quick-start)
-- [Project Structure](#project-structure)
-- [Deployment Guide](#deployment-guide)
-- [Monitoring](#monitoring)
-- [Security](#security)
-- [Troubleshooting](#troubleshooting)
+- [Overview](#-overview)
+- [Architecture](#-architecture)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Prerequisites](#-prerequisites)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Deployment Guide](#-deployment-guide)
+- [Monitoring](#-monitoring)
+- [Security](#-security)
+- [Troubleshooting](#-troubleshooting)
+- [Learning Outcomes](#-learning-outcomes)
+- [Interview Talking Points](#-interview-talking-points)
 
-## 🎯 Overview
+## 🔎 Overview
 
 This project showcases a complete DevSecOps workflow including:
-- **Containerized Python Flask application** with REST API and Bootstrap UI
-- **HTTPS encryption** with Let's Encrypt SSL certificates
+- **Interactive web application** with Bootstrap 5 dashboard UI and REST API
+- **HTTPS encryption** with Cloudflare SSL (free tier)
 - **Nginx reverse proxy** for security and performance
 - **Infrastructure as Code** using Terraform for AWS provisioning
-- **Custom domain** with AWS Route 53 DNS management
+- **Custom domain** with Cloudflare DNS and CDN
 - **Automated CI/CD pipeline** with GitHub Actions
 - **Security scanning** at every stage (Trivy, Bandit, Safety)
 - **Monitoring stack** with Prometheus and Grafana
-- **Secrets management** using AWS Secrets Manager
+- **Docker Compose** orchestration for production deployment
 
 Perfect for demonstrating DevOps capabilities in job interviews and building production-ready applications.
 
 **Live Demo:** https://jqtech.dpdns.org
 
-## 🏗️ Architecture
+## 🏛️ Architecture
 
 ```
 ┌─────────────┐      ┌──────────────────┐      ┌─────────────┐
@@ -58,40 +61,43 @@ Perfect for demonstrating DevOps capabilities in job interviews and building pro
 
 ### Traffic Flow
 ```
-User ──▶ AWS VPC ──▶ EC2 Instance ──▶ Docker Container ──▶ Flask App
-                           │
-                           ▼
-                    Prometheus/Grafana
-                     (Monitoring)
+User ──▶ Cloudflare CDN ──▶ AWS VPC ──▶ EC2 (t3.micro) ──▶ Nginx ──▶ Docker Compose ──▶ Flask App
+         (SSL/DDoS)                           │                        (webapp container)
+                                              ▼
+                                       Prometheus/Grafana
+                                         (Monitoring)
 ```
 
 ## ✨ Features
 
 ### Application
-- ✅ REST API with CRUD operations
-- ✅ **Bootstrap 5 responsive dashboard UI**
-- ✅ **Interactive task management interface**
-- ✅ Health check endpoints
-- ✅ Request logging and error handling
+- ✅ **Interactive Bootstrap 5 dashboard** with modern, responsive design
+- ✅ **Real-time task management** with add, edit, delete, and complete operations
+- ✅ **Clickable status toggles** for one-click task completion
+- ✅ **Live statistics** showing total, completed, and pending tasks
+- ✅ **Accurate timestamps** with timezone support
+- ✅ REST API with full CRUD operations and JSON responses
+- ✅ Health check endpoints for monitoring
 - ✅ Multi-stage Docker builds for optimization
 - ✅ Non-root container security
 
 ### Security & HTTPS
-- ✅ **Let's Encrypt SSL certificates (A+ rating)**
-- ✅ **Nginx reverse proxy with security headers**
-- ✅ **Automatic SSL certificate renewal**
-- ✅ Vulnerability scanning with Trivy
-- ✅ Code security analysis with Bandit
-- ✅ Dependency checking with Safety
-- ✅ Secrets management with AWS Secrets Manager
+- ✅ **Cloudflare SSL/TLS encryption** with free universal SSL
+- ✅ **Cloudflare CDN** with global edge network and DDoS protection
+- ✅ **Nginx reverse proxy** with security headers
+- ✅ **Vulnerability scanning** with Trivy (container images)
+- ✅ **Code security analysis** with Bandit (Python SAST)
+- ✅ **Dependency checking** with Safety (CVE detection)
+- ✅ Secrets management with GitHub Secrets
 - ✅ IMDSv2 enforcement on EC2
-- ✅ Encrypted storage
+- ✅ Encrypted EBS volumes
 
 ### Infrastructure
-- ✅ **AWS Route 53 custom domain management**
+- ✅ **Custom domain** with HTTPS (jqtech.dpdns.org)
+- ✅ **Cloudflare DNS** with proxy and caching
 - ✅ VPC with public/private subnets
 - ✅ Security groups with minimal access
-- ✅ Encrypted EBS volumes
+- ✅ Encrypted EBS volumes (30GB gp3)
 - ✅ IAM roles with least privilege
 - ✅ Elastic IP for stable addressing
 - ✅ Reusable Terraform modules
@@ -116,18 +122,19 @@ User ──▶ AWS VPC ──▶ EC2 Instance ──▶ Docker Container ──�
 
 | Category | Technologies |
 |----------|-------------|
-| **Application** | Python, Flask, Gunicorn |
-| **Frontend** | Bootstrap 5, JavaScript (Vanilla) |
-| **Containerization** | Docker, Docker Compose |
-| **Reverse Proxy** | Nginx |
-| **SSL/TLS** | Let's Encrypt, Certbot |
-| **Infrastructure** | Terraform, AWS (VPC, EC2, IAM, Route 53, Secrets Manager) |
-| **CI/CD** | GitHub Actions |
-| **Security** | Trivy, Bandit, Safety |
+| **Application** | Python 3.11, Flask, Gunicorn (single-worker mode) |
+| **Frontend** | Bootstrap 5.3, JavaScript ES6, Bootstrap Icons |
+| **Containerization** | Docker (multi-stage builds), Docker Compose |
+| **Reverse Proxy** | Nginx 1.25 (Alpine) |
+| **SSL/TLS** | Cloudflare Universal SSL (free tier) |
+| **CDN** | Cloudflare (global edge network) |
+| **Infrastructure** | Terraform 1.6+, AWS (VPC, EC2 t3.micro, IAM, EBS) |
+| **CI/CD** | GitHub Actions (5-stage pipeline) |
+| **Security** | Trivy, Bandit, Safety, Flake8 |
 | **Monitoring** | Prometheus, Grafana, cAdvisor, Node Exporter |
-| **Version Control** | Git, GitHub |
+| **Version Control** | Git, GitHub (main branch) |
 
-## 📦 Prerequisites
+## ⚠️ Prerequisites ⚠️
 
 Before you begin, ensure you have:
 
@@ -156,7 +163,7 @@ aws --version
 docker --version
 ```
 
-## 🚀 Quick Start
+## ❯❯❯❯ Quick Start ❯❯❯❯
 
 ### 1. Clone the Repository
 
@@ -302,7 +309,7 @@ curl http://<EC2_IP>:5000/health
 curl http://<EC2_IP>:5000/api/tasks
 ```
 
-## 📊 Monitoring
+## 👀 Monitoring 👀
 
 ### Access Monitoring Tools
 
@@ -437,4 +444,4 @@ For questions or issues:
 - Open an issue in this repository
 - Contact via LinkedIn
 
-**Happy DevOps-ing! 🚀**
+**Happy DevOps-ing! 👨‍💻**
