@@ -232,12 +232,16 @@ jobs:
             docker-compose -f docker-compose.prod.yml down || true
             docker-compose -f docker-compose.prod.yml up -d
             
-            # Wait for services to start
-            sleep 10
+            # Wait for services to start and health checks to pass
+            echo "Waiting for containers to become healthy..."
+            sleep 20
             
             # Verify deployment
             docker-compose -f docker-compose.prod.yml ps
-            curl -f http://localhost:5000/health || exit 1
+            
+            # Check nginx (port 80) instead of webapp directly
+            curl -f http://localhost/health || exit 1
+            echo "Health check passed!"
           EOF
           
           # Clean up
@@ -247,8 +251,8 @@ jobs:
         run: |
           INSTANCE_IP=${{ steps.get-ip.outputs.instance_ip }}
           echo "Application deployed successfully!"
-          echo "URL: http://$INSTANCE_IP:5000"
-          curl -f http://$INSTANCE_IP:5000/health
+          echo "URL: http://$INSTANCE_IP"
+          curl -f http://$INSTANCE_IP/health
 
   # Job 5: Post-Deployment Tests
   post-deploy-tests:
@@ -280,12 +284,12 @@ jobs:
       - name: Health check
         run: |
           INSTANCE_IP=${{ steps.get-ip.outputs.instance_ip }}
-          curl -f http://$INSTANCE_IP:5000/health
+          curl -f http://$INSTANCE_IP/health
 
       - name: Smoke tests
         run: |
           INSTANCE_IP=${{ steps.get-ip.outputs.instance_ip }}
-          BASE_URL="http://$INSTANCE_IP:5000"
+          BASE_URL="http://$INSTANCE_IP"
           
           # Test home endpoint
           curl -f $BASE_URL/
