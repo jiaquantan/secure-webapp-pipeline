@@ -218,8 +218,15 @@ jobs:
             APP_VERSION=${{ github.sha }}
           ENVEOF
             
+            # Update docker-compose to use HTTP-only nginx config (no SSL certs yet)
+            sed -i 's|./nginx/nginx.conf:/etc/nginx/nginx.conf:ro|./nginx/nginx-http.conf:/etc/nginx/nginx.conf:ro|' docker-compose.prod.yml
+            
             # Pull latest images
             docker pull ${{ env.DOCKER_IMAGE }}:latest
+            
+            # Stop old single container if exists
+            docker stop webapp 2>/dev/null || true
+            docker rm webapp 2>/dev/null || true
             
             # Deploy with docker-compose
             docker-compose -f docker-compose.prod.yml down || true
