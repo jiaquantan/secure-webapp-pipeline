@@ -6,6 +6,7 @@ A production-ready DevSecOps project demonstrating automated deployment of a con
 ![Python](https://img.shields.io/badge/python-3.11-blue.svg)
 ![Terraform](https://img.shields.io/badge/terraform-1.6+-purple.svg)
 ![Docker](https://img.shields.io/badge/docker-latest-blue.svg)
+![Build Status](https://github.com/jiaquantan/secure-webapp-pipeline/actions/workflows/deploy.yml/badge.svg?branch=main)
 
 ## 📋 Table of Contents
 
@@ -36,7 +37,7 @@ This project showcases a complete DevSecOps workflow including:
 
 Perfect for demonstrating DevOps capabilities in job interviews and building production-ready applications.
 
-**Live Demo:** \[Add your HTTPS URL here after setup\]
+**Live Demo:** http://34.226.114.204
 
 ## 🏗️ Architecture
 
