@@ -431,10 +431,9 @@ Built as a portfolio project to demonstrate DevOps and Cloud Engineering skills 
 
 ---
 
-**Author**: [Your Name]  
-**LinkedIn**: [Your LinkedIn]  
-**GitHub**: [Your GitHub]  
-**Portfolio**: [Your Portfolio]
+**Author**: JQ Tan    
+**LinkedIn**: https://www.linkedin.com/in/jqtan10/    
+**Portfolio**: https://linktr.ee/jq10    
 
 ---
 
