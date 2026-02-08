@@ -37,7 +37,7 @@ This project showcases a complete DevSecOps workflow including:
 
 Perfect for demonstrating DevOps capabilities in job interviews and building production-ready applications.
 
-**Live Demo:** http://34.226.114.204
+**Live Demo:** https://jqtech.dpdns.org
 
 ## 🏗️ Architecture
 
