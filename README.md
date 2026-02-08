@@ -1,4 +1,4 @@
-# 🚀 Secure 3-Tier Web Application Pipeline
+# 🌐 Secure 3-Tier Web Application Pipeline
 
 A production-ready DevSecOps project demonstrating automated deployment of a containerized Flask application to AWS using Infrastructure as Code, CI/CD pipelines, and comprehensive security scanning.
 
