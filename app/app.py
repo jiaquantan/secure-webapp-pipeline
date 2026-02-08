@@ -33,14 +33,14 @@ tasks = [
         "title": "Learn DevOps",
         "description": "Study DevOps principles, tools, and best practices",
         "completed": False,
-        "created_at": (datetime.utcnow() - timedelta(hours=2, minutes=30)).isoformat()
+        "created_at": (datetime.utcnow() - timedelta(hours=2, minutes=30)).isoformat() + 'Z'
     },
     {
         "id": 2,
         "title": "Build CI/CD Pipeline",
         "description": "Create automated deployment pipeline with GitHub Actions",
         "completed": False,
-        "created_at": (datetime.utcnow() - timedelta(hours=1, minutes=15)).isoformat()
+        "created_at": (datetime.utcnow() - timedelta(hours=1, minutes=15)).isoformat() + 'Z'
     }
 ]
 
@@ -56,7 +56,7 @@ def api_info():
         "message": "Welcome to Secure Web App Pipeline API!",
         "version": APP_VERSION,
         "environment": ENVIRONMENT,
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": datetime.utcnow().isoformat() + 'Z',
         "endpoints": {
             "health": "/health",
             "tasks": "/api/tasks",
@@ -70,7 +70,7 @@ def health():
     return jsonify({
         "status": "healthy",
         "version": APP_VERSION,
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.utcnow().isoformat() + 'Z'
     }), 200
 
 @app.route('/api/tasks', methods=['GET'])
@@ -92,7 +92,7 @@ def create_task():
         "title": data['title'],
         "description": data.get('description', ''),
         "completed": data.get('completed', False),
-        "created_at": datetime.utcnow().isoformat()
+        "created_at": datetime.utcnow().isoformat() + 'Z'  # Add Z to indicate UTC
     }
     tasks.append(new_task)
     logger.info(f"Created new task: {new_task['title']}")
