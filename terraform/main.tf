@@ -268,3 +268,31 @@ resource "aws_eip" "web" {
 
   depends_on = [aws_internet_gateway.main]
 }
+
+# Route 53 DNS Configuration (Optional)
+# Get the hosted zone if domain is provided
+data "aws_route53_zone" "main" {
+  count        = var.create_dns_record && var.domain_name != "" ? 1 : 0
+  name         = var.domain_name
+  private_zone = false
+}
+
+# Create A record pointing to Elastic IP
+resource "aws_route53_record" "web" {
+  count   = var.create_dns_record && var.domain_name != "" ? 1 : 0
+  zone_id = data.aws_route53_zone.main[0].zone_id
+  name    = var.domain_name
+  type    = "A"
+  ttl     = 300
+  records = [aws_eip.web.public_ip]
+}
+
+# Create www subdomain record (optional)
+resource "aws_route53_record" "www" {
+  count   = var.create_dns_record && var.domain_name != "" ? 1 : 0
+  zone_id = data.aws_route53_zone.main[0].zone_id
+  name    = "www.${var.domain_name}"
+  type    = "A"
+  ttl     = 300
+  records = [aws_eip.web.public_ip]
+}

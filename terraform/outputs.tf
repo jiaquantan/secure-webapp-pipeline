@@ -47,3 +47,22 @@ output "ec2_role_arn" {
   description = "ARN of the EC2 IAM role"
   value       = aws_iam_role.ec2_role.arn
 }
+
+# DNS Outputs (Optional)
+output "domain_name" {
+  description = "Domain name (if configured)"
+  value       = var.domain_name != "" ? var.domain_name : "Not configured"
+}
+
+output "https_url" {
+  description = "HTTPS URL to access the application (if domain configured)"
+  value       = var.domain_name != "" ? "https://${var.domain_name}" : "Configure domain_name variable to enable HTTPS"
+}
+
+output "dns_records" {
+  description = "DNS records created (if domain configured)"
+  value = var.create_dns_record && var.domain_name != "" ? {
+    main = "${var.domain_name} -> ${aws_eip.web.public_ip}"
+    www  = "www.${var.domain_name} -> ${aws_eip.web.public_ip}"
+  } : {}
+}

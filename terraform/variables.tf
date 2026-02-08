@@ -58,3 +58,16 @@ variable "app_version" {
   type        = string
   default     = "1.0.0"
 }
+
+# DNS Configuration
+variable "domain_name" {
+  description = "Domain name for the application (must be registered in Route 53)"
+  type        = string
+  default     = "" # e.g., "example.com" - leave empty if not using custom domain
+}
+
+variable "create_dns_record" {
+  description = "Whether to create Route 53 DNS record (requires domain_name)"
+  type        = bool
+  default     = false
+}

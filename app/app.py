@@ -2,7 +2,8 @@
 Secure 3-Tier Web App - Flask API
 A simple REST API with health checks and basic endpoints
 """
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
+from flask_cors import CORS
 import os
 import logging
 from datetime import datetime
@@ -11,7 +12,12 @@ from datetime import datetime
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_folder='static',
+            template_folder='templates')
+
+# Enable CORS for API endpoints
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Configuration
 APP_VERSION = os.getenv('APP_VERSION', '1.0.0')
@@ -19,18 +25,40 @@ ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
 # In-memory storage (for demo purposes)
 tasks = [
-    {"id": 1, "title": "Learn DevOps", "completed": False},
-    {"id": 2, "title": "Build CI/CD Pipeline", "completed": False}
+    {
+        "id": 1,
+        "title": "Learn DevOps",
+        "description": "Study DevOps principles, tools, and best practices",
+        "completed": False,
+        "created_at": datetime.utcnow().isoformat()
+    },
+    {
+        "id": 2,
+        "title": "Build CI/CD Pipeline",
+        "description": "Create automated deployment pipeline with GitHub Actions",
+        "completed": False,
+        "created_at": datetime.utcnow().isoformat()
+    }
 ]
 
 @app.route('/')
 def home():
-    """Home endpoint"""
+    """Home endpoint - serves the dashboard UI"""
+    return render_template('index.html')
+
+@app.route('/api')
+def api_info():
+    """API information endpoint"""
     return jsonify({
-        "message": "Welcome to Secure Web App Pipeline!",
+        "message": "Welcome to Secure Web App Pipeline API!",
         "version": APP_VERSION,
         "environment": ENVIRONMENT,
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.utcnow().isoformat(),
+        "endpoints": {
+            "health": "/health",
+            "tasks": "/api/tasks",
+            "task_by_id": "/api/tasks/<id>"
+        }
     })
 
 @app.route('/health')
@@ -59,7 +87,9 @@ def create_task():
     new_task = {
         "id": len(tasks) + 1,
         "title": data['title'],
-        "completed": data.get('completed', False)
+        "description": data.get('description', ''),
+        "completed": data.get('completed', False),
+        "created_at": datetime.utcnow().isoformat()
     }
     tasks.append(new_task)
     logger.info(f"Created new task: {new_task['title']}")
@@ -74,7 +104,7 @@ def get_task(task_id):
     if not task:
         return jsonify({"error": "Task not found"}), 404
     
-    return jsonify(task)
+    return jsonify({"task": task})
 
 @app.route('/api/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
@@ -86,10 +116,11 @@ def update_task(task_id):
     
     data = request.get_json()
     task['title'] = data.get('title', task['title'])
+    task['description'] = data.get('description', task.get('description', ''))
     task['completed'] = data.get('completed', task['completed'])
     
     logger.info(f"Updated task {task_id}")
-    return jsonify(task)
+    return jsonify({"task": task})
 
 @app.route('/api/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):

@@ -105,3 +105,19 @@ safety-report.json
 *.bak
 *.backup
 *.tmp
+
+# SSL Certificates and Keys
+certbot/
+*.pem
+*.key
+*.crt
+*.csr
+ssl-dhparams.pem
+
+# Environment files
+.env
+.env.local
+.env.production.local
+
+# Logs
+cert-renew.log

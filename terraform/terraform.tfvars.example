@@ -27,3 +27,9 @@ ssh_public_key = "ssh-rsa AAAAB3... your-public-key-here"
 
 # Application Configuration
 app_version = "1.0.0"
+
+# DNS Configuration (Optional - for HTTPS)
+# Set create_dns_record = true and provide domain_name to enable custom domain
+# Domain must already be registered in AWS Route 53
+domain_name        = ""     # e.g., "myapp.com" - leave empty if not using
+create_dns_record  = false  # Set to true to create Route 53 DNS records

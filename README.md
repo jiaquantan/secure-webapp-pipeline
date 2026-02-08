@@ -24,14 +24,19 @@ A production-ready DevSecOps project demonstrating automated deployment of a con
 ## 🎯 Overview
 
 This project showcases a complete DevSecOps workflow including:
-- **Containerized Python Flask application** with REST API endpoints
+- **Containerized Python Flask application** with REST API and Bootstrap UI
+- **HTTPS encryption** with Let's Encrypt SSL certificates
+- **Nginx reverse proxy** for security and performance
 - **Infrastructure as Code** using Terraform for AWS provisioning
+- **Custom domain** with AWS Route 53 DNS management
 - **Automated CI/CD pipeline** with GitHub Actions
 - **Security scanning** at every stage (Trivy, Bandit, Safety)
 - **Monitoring stack** with Prometheus and Grafana
 - **Secrets management** using AWS Secrets Manager
 
 Perfect for demonstrating DevOps capabilities in job interviews and building production-ready applications.
+
+**Live Demo:** \[Add your HTTPS URL here after setup\]
 
 ## 🏗️ Architecture
 
@@ -63,12 +68,26 @@ User ──▶ AWS VPC ──▶ EC2 Instance ──▶ Docker Container ──�
 
 ### Application
 - ✅ REST API with CRUD operations
+- ✅ **Bootstrap 5 responsive dashboard UI**
+- ✅ **Interactive task management interface**
 - ✅ Health check endpoints
 - ✅ Request logging and error handling
 - ✅ Multi-stage Docker builds for optimization
 - ✅ Non-root container security
 
+### Security & HTTPS
+- ✅ **Let's Encrypt SSL certificates (A+ rating)**
+- ✅ **Nginx reverse proxy with security headers**
+- ✅ **Automatic SSL certificate renewal**
+- ✅ Vulnerability scanning with Trivy
+- ✅ Code security analysis with Bandit
+- ✅ Dependency checking with Safety
+- ✅ Secrets management with AWS Secrets Manager
+- ✅ IMDSv2 enforcement on EC2
+- ✅ Encrypted storage
+
 ### Infrastructure
+- ✅ **AWS Route 53 custom domain management**
 - ✅ VPC with public/private subnets
 - ✅ Security groups with minimal access
 - ✅ Encrypted EBS volumes
@@ -80,6 +99,7 @@ User ──▶ AWS VPC ──▶ EC2 Instance ──▶ Docker Container ──�
 - ✅ Automated testing and linting
 - ✅ Security scanning (SAST, container scanning)
 - ✅ Automated Docker builds and pushes
+- ✅ **Docker Compose orchestration**
 - ✅ Zero-downtime deployments
 - ✅ Rollback capabilities
 - ✅ Post-deployment smoke tests
@@ -91,21 +111,16 @@ User ──▶ AWS VPC ──▶ EC2 Instance ──▶ Docker Container ──�
 - ✅ System metrics with Node Exporter
 - ✅ Application health checks
 
-### Security
-- ✅ Vulnerability scanning with Trivy
-- ✅ Code security analysis with Bandit
-- ✅ Dependency checking with Safety
-- ✅ Secrets management with AWS Secrets Manager
-- ✅ IMDSv2 enforcement on EC2
-- ✅ Encrypted storage
-
 ## 🛠️ Tech Stack
 
 | Category | Technologies |
 |----------|-------------|
 | **Application** | Python, Flask, Gunicorn |
+| **Frontend** | Bootstrap 5, JavaScript (Vanilla) |
 | **Containerization** | Docker, Docker Compose |
-| **Infrastructure** | Terraform, AWS (VPC, EC2, IAM, Secrets Manager) |
+| **Reverse Proxy** | Nginx |
+| **SSL/TLS** | Let's Encrypt, Certbot |
+| **Infrastructure** | Terraform, AWS (VPC, EC2, IAM, Route 53, Secrets Manager) |
 | **CI/CD** | GitHub Actions |
 | **Security** | Trivy, Bandit, Safety |
 | **Monitoring** | Prometheus, Grafana, cAdvisor, Node Exporter |

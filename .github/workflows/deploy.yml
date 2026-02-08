@@ -194,31 +194,42 @@ jobs:
         env:
           PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           INSTANCE_IP: ${{ steps.get-ip.outputs.instance_ip }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
         run: |
           # Save private key to file
           echo "$PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
           
+          # Copy deployment files to EC2
+          scp -o StrictHostKeyChecking=no -i private_key.pem \
+            docker-compose.prod.yml \
+            ec2-user@$INSTANCE_IP:~/
+          
+          scp -o StrictHostKeyChecking=no -i private_key.pem -r \
+            nginx \
+            scripts \
+            ec2-user@$INSTANCE_IP:~/
+          
           # SSH and deploy
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@$INSTANCE_IP << 'EOF'
-            # Pull latest image
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@$INSTANCE_IP << EOF
+            # Create .env file
+            cat > .env << 'ENVEOF'
+            DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME
+            APP_VERSION=${{ github.sha }}
+          ENVEOF
+            
+            # Pull latest images
             docker pull ${{ env.DOCKER_IMAGE }}:latest
             
-            # Stop existing container
-            docker stop webapp || true
-            docker rm webapp || true
+            # Deploy with docker-compose
+            docker-compose -f docker-compose.prod.yml down || true
+            docker-compose -f docker-compose.prod.yml up -d
             
-            # Run new container
-            docker run -d \
-              --name webapp \
-              -p 5000:5000 \
-              --restart unless-stopped \
-              -e ENVIRONMENT=production \
-              -e APP_VERSION=${{ github.sha }} \
-              ${{ env.DOCKER_IMAGE }}:latest
+            # Wait for services to start
+            sleep 10
             
             # Verify deployment
-            sleep 5
+            docker-compose -f docker-compose.prod.yml ps
             curl -f http://localhost:5000/health || exit 1
           EOF
           
