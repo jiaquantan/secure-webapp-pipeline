@@ -24,20 +24,23 @@ APP_VERSION = os.getenv('APP_VERSION', '1.0.0')
 ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
 # In-memory storage (for demo purposes)
+# Generate timestamps at different times for realistic demo data
+from datetime import timedelta
+
 tasks = [
     {
         "id": 1,
         "title": "Learn DevOps",
         "description": "Study DevOps principles, tools, and best practices",
         "completed": False,
-        "created_at": datetime.utcnow().isoformat()
+        "created_at": (datetime.utcnow() - timedelta(hours=2, minutes=30)).isoformat()
     },
     {
         "id": 2,
         "title": "Build CI/CD Pipeline",
         "description": "Create automated deployment pipeline with GitHub Actions",
         "completed": False,
-        "created_at": datetime.utcnow().isoformat()
+        "created_at": (datetime.utcnow() - timedelta(hours=1, minutes=15)).isoformat()
     }
 ]
 

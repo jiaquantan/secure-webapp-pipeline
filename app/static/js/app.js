@@ -92,7 +92,10 @@ function renderTask(task) {
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <h6 class="task-title">
-                        <i class="bi bi-${task.completed ? 'check-circle-fill text-success' : 'circle'} me-2"></i>
+                        <i class="bi bi-${task.completed ? 'check-circle-fill text-success' : 'circle'} me-2" 
+                           onclick="toggleTaskCompletion(${task.id}, ${!task.completed})" 
+                           style="cursor: pointer;" 
+                           title="Click to ${task.completed ? 'mark as pending' : 'mark as completed'}"></i>
                         ${escapeHtml(task.title)}
                     </h6>
                     ${task.description ? `<p class="task-description mb-2">${escapeHtml(task.description)}</p>` : ''}
@@ -246,6 +249,31 @@ async function updateTask() {
     } catch (error) {
         console.error('Error updating task:', error);
         showToast('Failed to update task. Please try again.', 'danger');
+    }
+}
+
+// Toggle task completion status
+async function toggleTaskCompletion(taskId, completed) {
+    try {
+        const response = await fetch(`${API_URL}/${taskId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ completed: completed })
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to update task');
+        }
+        
+        // Reload tasks to reflect changes
+        await loadTasks();
+        
+        showToast(`Task marked as ${completed ? 'completed' : 'pending'}!`, 'success');
+    } catch (error) {
+        console.error('Error toggling task:', error);
+        showToast('Failed to update task status', 'danger');
     }
 }
 
