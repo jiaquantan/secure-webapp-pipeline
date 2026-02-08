@@ -261,8 +261,12 @@ async function deleteTask(taskId) {
         });
         
         if (!response.ok) {
-            throw new Error('Failed to delete task');
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+            throw new Error(errorData.error || 'Failed to delete task');
         }
+        
+        const result = await response.json();
+        console.log('Delete successful:', result);
         
         // Reload tasks
         await loadTasks();
@@ -270,7 +274,7 @@ async function deleteTask(taskId) {
         showToast('Task deleted successfully!', 'success');
     } catch (error) {
         console.error('Error deleting task:', error);
-        showToast('Failed to delete task. Please try again.', 'danger');
+        showToast(`Failed to delete task: ${error.message}`, 'danger');
     }
 }
 

@@ -131,7 +131,8 @@ def delete_task(task_id):
     if not task:
         return jsonify({"error": "Task not found"}), 404
     
-    tasks = [t for t in tasks if t['id'] != task_id]
+    # Remove task using list comprehension with slice assignment to modify global list
+    tasks[:] = [t for t in tasks if t['id'] != task_id]
     logger.info(f"Deleted task {task_id}")
     
     return jsonify({"message": "Task deleted successfully"}), 200
